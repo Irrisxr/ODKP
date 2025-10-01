@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Манипуляция масс в соцсетях</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #1c3232;
+      color: #eafff7;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      transition: background 0.5s;
+    }
+    .slide {
+      position: absolute;
+      left: 0; top: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 45px 5vw 28px 5vw;
+      box-sizing: border-box;
+      transition: background 0.5s;
+      animation: fadein .5s;
+    }
+    @keyframes fadein { from {opacity:0} to {opacity:1;} }
+    .slide.active { display: flex; }
+    .slide-caption {
+      position: absolute;
+      top: 32px; left: 50px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 3;
+      opacity: 0.92;
+    }
+    .caption-bar {
+      display: inline-block;
+      width: 6px;
+      height: 32px;
+      background: linear-gradient(180deg,#17c899 30%,#affadb 100%);
+      border-radius: 3px;
+      margin-right: 12px;
+    }
+    .caption-text {
+      color: #b1e5c8;
+      font-size: 1.14em;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 14px #1c323280;
+      background: none;
+      border: none;
+      padding: 0 18px 2px 0;
+    }
+    .block {
+      background: linear-gradient(132deg, #27c8aa 10%, #c2f7e0 100%);
+      color: #184642;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px #1c32322c;
+      padding: 26px 28px 20px 28px;
+      margin: 16px 0;
+      font-size: 1.22em;
+      max-width: 580px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .block-title {
+      font-size: 1.13em;
+      font-weight: bold;
+      margin-bottom: 0.6em;
+      color: #124c42;
+      letter-spacing: 1px;
+    }
+    .slide-title {
+      font-size: 3em;
+      font-weight: bold;
+      margin-bottom: 0.35em;
+      background: linear-gradient(90deg, #88eacc 20%, #15a284 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+    .slide-subtitle {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin-bottom: 2.1em;
+      color: #b1e5c8;
+      text-shadow: 0 2px 10px #1c323280;
+      letter-spacing: 1px;
+    }
+    .blocks-row {
+      display: flex;
+      gap: 24px;
+      width: 100%;
+      max-width: 1200px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .blocks-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      width: 100%; max-width: 400px;
+    }
+    .stat-block {
+      background: #18b395;
+      color: #eafff7;
+      font-weight: 600;
+      padding: 14px 18px 10px 18px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      font-size: 1em;
+      box-shadow: 0 2px 18px #18464222;
+    }
+    .wide-row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+      max-width: 1300px;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .wide-col {
+      flex: 1;
+      min-width: 400px;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .right-img-col {
+      flex: 1;
+      min-width: 420px;
+      max-width: 660px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top:30px;
+    }
+    .img-headline {
+      color:#18c4a6;
+      font-weight:700;
+      font-size:1.23em;
+      letter-spacing:0.5px;
+      margin-bottom:15px;
+      text-align:center;
+      text-shadow:0 2px 12px #2ed0a420;
+    }
+    .big-img {
+      width:100%;
+      max-width:550px;
+      border-radius:22px;
+      margin-bottom:13px;
+      box-shadow:0 4px 38px #1c323237;
+      background:#fff;
+    }
+    .img-caption {
+      color:#b8f6e2;
+      font-size:1.08em;
+      text-align:center;
+      background:rgba(30,56,56,0.12);
+      border-radius:10px;
+      padding:10px 14px;
+      margin-top:3px;
+      font-weight:400;
+      line-height:1.49;
+      max-width:550px;
+    }
+    .final-grid {
+      width: 100%;
+      max-width: 850px;
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-gap: 34px;
+      justify-items: center;
+      align-items: stretch;
+      padding: 0 0 32px 0;
+    }
+    .nav-arrows {
+      display: none;
+    }
+
+    @media (max-width: 1200px) { .wide-row { gap: 10px;}}
+    @media (max-width: 1100px) {.right-img-col{min-width:300px;max-width:99vw;}.wide-col{min-width:260px;}}
+    @media (max-width: 900px) {
+      .blocks-row, .wide-row {flex-direction: column;}
+      .right-img-col, .wide-col {max-width: 99vw;}
+      .final-grid {grid-template-columns:1fr;grid-template-rows:auto auto auto auto;grid-gap:16px;}
+    }
+    @media (max-width: 700px) {
+      .slide-title {font-size: 2em;}
+      .slide-subtitle {font-size: 1em;}
+      .block {font-size: 1em;}
+      .slide {padding: 8vw 2vw;}
+      .nav-arrow {width: 38px; height: 38px; font-size:1.3em;}
+      .blocks-col, .block {max-width: 95vw;}
+      .wide-col, .block {max-width: 99vw;}
+      .slide-caption {font-size:0.95em;top:18px;left:10vw;}
+      .final-grid {grid-gap:10px;}
+      .big-img,.img-caption{max-width:99vw;}
+    }
+  </style>
+</head>
+<body>
+  <!-- 1. Титульный -->
+  <section class="slide active" id="slide-0">
+    <div class="slide-title">Манипуляция масс в&nbsp;соцсетях</div>
+    <div class="slide-subtitle">Как блогеры превращают <span style="color:#15a284;font-weight:bold;">фальшивые факты</span> в инструмент управления</div>
+    <div style="margin-bottom:2em; color:#a9f8e7;font-size:1.14em;">Проектная работа, октябрь 2025</div>
+    <div style="color:#eafff7;font-size:1.06em;">Авторы: <span style="color:#27c8aa;font-weight:bold;">Савченков Матвей, Олейников Александр</span></div>
+  </section>
+  
+  <!-- 2. Цели и актуальность -->
+  <section class="slide" id="slide-1">
+    <div class="slide-caption"><span class="caption-bar"></span><span class="caption-text">Актуальность и цели</span></div>
+    <div class="blocks-row">
+      <div class="block">
+        <div class="block-title">Актуальность</div>
+        <ul>
+          <li>Соцсети формируют взгляды миллионов, заменяя традиционные СМИ.</li>
+          <li>Инфлюэнсеры используют доверие и харизму для масштабного влияния.</li>
+          <li>Фейковые факты усиливают поляризацию, подрывают доверие к информации.</li>
+          <li>Понимание манипуляций важно для защиты и развития критического мышления.</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Цели</div>
+        <ul>
+          <li>Раскрыть, как блогеры и инфлюэнсеры используют фальшивые факты для манипуляции.</li>
+          <li>Показать механизмы, последствия и способы противодействия дезинформации.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 3. Факторы доверия и статистика/график -->
+  <section class="slide" id="slide-2">
+    <div class="slide-caption"><span class="caption-bar"></span><span class="caption-text">Факторы доверия и статистика</span></div>
+    <div class="wide-row">
+      <div class="wide-col">
+        <div class="block" style="width:100%;max-width:none;">
+          <div class="block-title">Почему доверяют</div>
+          <ul>
+            <li>Аутентичность: личные истории создают эмоциональную близость.</li>
+            <li>Экспертность: даже без подтверждений — нишевая подача убеждает аудиторию.</li>
+            <li>Социальная связь: подписчики видят в них друзей.</li>
+          </ul>
+        </div>
+        <div class="block" style="width:100%;max-width:none;">
+          <div class="block-title">Статистика</div>
+          <div class="stat-block">61% доверяют инфлюэнсерам больше, чем рекламе</div>
+          <div class="stat-block">92% выбирают советы блогеров вместо объявлений</div>
+          <div class="stat-block">94% Gen Z доверяют блогерам</div>
+        </div>
+      </div>
+      <div class="right-img-col">
+        <div class="img-headline">Рынок инфлюэнсеров, 2019–2025</div>
+        <img src="C:\Users\Савченков Матвей\Desktop\ОДПК\Рост влияния.png" alt="Рост рынка инфлюэнсеров" class="big-img">
+        <div class="img-caption">
+          График показывает экспоненциальный рост рынка с 6.5 млрд USD в 2019 году до прогнозируемых 33 млрд USD в 2025 году, с CAGR около 30–35%. Это отражает сдвиг брендов к аутентичному контенту в соцсетях, где инфлюэнсеры усиливают вовлеченность, но также повышает риски дезинформации, так как рост на 35.63% в 2024–2025 году опережает традиционную рекламу.
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 4. Механизмы манипуляций -->
+  <section class="slide" id="slide-3">
+    <div class="slide-caption"><span class="caption-bar"></span><span class="caption-text">Механизмы манипуляций</span></div>
+    <div class="final-grid">
+      <div class="block"><div class="block-title">Эмоции</div><div>Страх, сочувствие, гнев через драматичные истории.</div></div>
+      <div class="block"><div class="block-title">Сенсационность</div><div>Лозунги, мемы, виральность и упрощённые идеи.</div></div>
+      <div class="block"><div class="block-title">Авторитет</div><div>Инсайды, «личный опыт» — без проверки и доказательств.</div></div>
+      <div class="block"><div class="block-title">Алгоритмы</div><div>Хэштеги, тренды, провокации для роста комментариев и охватов.</div></div>
+    </div>
+  </section>
+  
+  <!-- Навигация -->
+  <div class="nav-arrows">
+    <button class="nav-arrow" onclick="prevSlide()" title="Назад">&#8592;</button>
+    <button class="nav-arrow" onclick="nextSlide()" title="Вперёд">&#8594;</button>
+  </div>
+  <script>
+    let slide = 0;
+    const slides = document.querySelectorAll('.slide');
+    function showSlide(n) {
+      slide = (n + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('active', i === slide));
+    }
+    function nextSlide() { showSlide(slide + 1); }
+    function prevSlide() { showSlide(slide - 1); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+    let startX = null;
+    document.addEventListener('mousedown', e => { startX = e.clientX; });
+    document.addEventListener('mouseup', e => {
+      if (startX !== null) {
+        if (e.clientX - startX > 90) prevSlide();
+        else if (startX - e.clientX > 90) nextSlide();
+      }
+      startX = null;
+    });
+    document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    document.addEventListener('touchend', e => {
+      if (startX !== null && e.changedTouches.length === 1) {
+        let delta = e.changedTouches[0].clientX - startX;
+        if (delta > 80) prevSlide();
+        else if (delta < -80) nextSlide();
+      }
+      startX = null;
+    });
+  </script>
+</body>
+</html>
