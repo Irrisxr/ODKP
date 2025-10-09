@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Презентация</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #134846 0%, #187a70 60%, #24b1a3 100%);
+    color: #eafff7;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    left: 0; top: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 45px 5vw 28px 5vw;
+    box-sizing: border-box;
+  }
+  .slide.active { display: flex; }
+
+  .slide-caption {
+    position: absolute;
+    top: 35px;
+    left: 45px;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #88eacc;
+    letter-spacing: 0.5px;
+  }
+
+  .slide-subtitle {
+    position: absolute;
+    top: 75px;
+    left: 45px;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #c2f7e0;
+  }
+
+  /* Стиль для заголовка титульного слайда - большой шрифт */
+  .title-slide-main {
+    font-size: 2.5em;
+    font-weight: 600;
+    color: #88eacc;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.3em;
+    text-align: center;
+  }
+
+  .title-slide-subtitle {
+    font-size: 2em;
+    font-weight: 500;
+    color: #88eacc;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5em;
+    text-align: center;
+  }
+
+  .title-slide-info {
+    color: #eafff7;
+    font-size: 1.06em;
+    text-align: center;
+  }
+
+  .title-slide-date {
+    margin-bottom: 2em;
+    color: #a9f8e7;
+    font-size: 1.14em;
+  }
+
+  .block {
+    background: linear-gradient(132deg, #27c8aa 10%, #c2f7e0 100%);
+    color: #184642;
+    border-radius: 18px;
+    box-shadow: 0 8px 40px 0 rgba(30, 50, 50, 0.17);
+    padding: 26px 28px 20px 28px;
+    margin: 16px 0;
+    font-size: 1.22em;
+    max-width: 580px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .block-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 0.6em;
+    color: #0d3d3a;
+  }
+
+  ul {
+    padding-left: 1.2em;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0.8em;
+  }
+
+  .blocks-row {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .blocks-col {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  #slide-2 .blocks-col {
+    max-width: 500px;
+    gap: 12px;
+  }
+
+  #slide-2 .block {
+    padding: 20px 28px 16px 28px;
+    margin: 8px 0;
+  }
+
+  #slide-2 li {
+    margin-bottom: 0.5em;
+  }
+
+  /* Универсальная высота для всех изображений на слайдах с примерами */
+  .img-height {
+    height: 500px;
+    width: auto;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(30, 50, 50, 0.25);
+    background: #fff;
+    object-fit: contain;
+  }
+
+  /* Стиль для слайда Джон Доллар - 2 колонки */
+  .dollar-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 80px;
+    align-items: flex-start;
+  }
+
+  .dollar-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .dollar-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .dollar-right img {
+    height: 240px;
+    width: auto;
+  }
+
+  /* Стиль для Марьяна Ро - 3 изображения в ряд */
+  .maryana-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 80px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  /* Для двух изображений - центрируем */
+  .double-img-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+    width: 100%;
+  }
+
+  /* Для одного изображения - центрируем */
+  .single-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+    width: 100%;
+  }
+
+  .chart-container {
+    flex: 1;
+    min-width: 500px;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .chart-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #88eacc;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .chart-img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 6px 30px rgba(30, 50, 50, 0.25);
+    background: #fff;
+    margin-bottom: 20px;
+  }
+
+  .chart-caption {
+    font-size: 1.05em;
+    color: #c2f7e0;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 600px;
+  }
+
+  .final-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  .final-grid .block {
+    max-width: 100%;
+  }
+
+  .nav-arrows {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+  }
+
+  .nav-arrow {
+    background: linear-gradient(135deg, #27c8aa, #15a284);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(30, 50, 50, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .nav-arrow:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(30, 50, 50, 0.4);
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. Титульный -->
+<section class="slide active" id="slide-0">
+  <div class="title-slide-main">Манипуляция масс в соцсетях:</div>
+  <div class="title-slide-subtitle">как блогеры превращают фальшивые факты в инструмент управления</div>
+  <div class="title-slide-date">Проектная работа, октябрь 2025</div>
+  <div class="title-slide-info">Авторы: Савченков Матвей, Олейников Александр</div>
+</section>
+
+<!-- 2. Цели и актуальность -->
+<section class="slide" id="slide-1">
+  <div class="slide-caption">Актуальность и цели</div>
+  <div class="blocks-row">
+    <div class="block">
+      <div class="block-title">Актуальность</div>
+      <ul>
+        <li>Соцсети формируют взгляды миллионов, заменяя традиционные СМИ.</li>
+        <li>Фейковые факты усиливают поляризацию, подрывают доверие к информации.</li>
+        <li>Понимание манипуляций важно для защиты и развития критического мышления.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Цели</div>
+      <ul>
+        <li>Раскрыть, как блогеры и инфлюэнсеры используют фальшивые факты для манипуляции.</li>
+        <li>Показать механизмы, последствия и способы противодействия дезинформации.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Факторы доверия -->
+<section class="slide" id="slide-2">
+  <div class="slide-caption">Факторы доверия</div>
+  <div class="blocks-row">
+    <div class="blocks-col">
+      <div class="block">
+        <div class="block-title">Почему доверяют</div>
+        <ul>
+          <li><strong>Когнитивные эвристики:</strong> простые истории и ясные тезисы повышают согласие.</li>
+          <li><strong>Экспертность:</strong> воспринимаются как эксперты благодаря уверенности и авторитетности.</li>
+          <li><strong>Социальное доказательство:</strong> количество лайков, комментариев и т.д. как сигнал качества и надежности.</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Статистика</div>
+        <ul>
+          <li><strong>61%</strong> доверяют инфлюэнсерам больше, чем рекламе. <i>Источник: GlobalWebIndex</i></li>
+          <li><strong>92%</strong> выбирают советы блогеров вместо объявлений. <i>Источник: Influencer Marketing Hub</i></li>
+          <li><strong>94%</strong> Gen Z доверяют блогерам. <i>Источник: Statista</i></li>
+        </ul>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">Рынок инфлюэнсеров, 2019–2025</div>
+      <img src="график.png" alt="График роста рынка инфлюэнсеров" class="chart-img" />
+      <div class="chart-caption">
+        Экспоненциальный рост рынка с 6.5 млрд USD в 2019 году до прогнозируемых 33 млрд USD в 2025 году, с CAGR около 30–35%. Рост на 35.63% в 2024–2025 году опережает традиционную рекламу. <i>Источник: Statista</i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Механизмы манипуляций -->
+<section class="slide" id="slide-3">
+  <div class="slide-caption">Механизмы манипуляций</div>
+  <div class="final-grid">
+    <div class="block"><div class="block-title">Эмоции</div><div>Страх, сочувствие, гнев через драматичные истории.</div></div>
+    <div class="block"><div class="block-title">Сенсационность</div><div>Лозунги, мемы, виральность и упрощённые идеи.</div></div>
+    <div class="block"><div class="block-title">Авторитет</div><div>Инсайды, «личный опыт» — без проверки и доказательств.</div></div>
+    <div class="block"><div class="block-title">Алгоритмы</div><div>Хэштеги, тренды, провокации для роста комментариев и охватов.</div></div>
+  </div>
+</section>
+
+<!-- 5. Психология восприятия -->
+<section class="slide" id="slide-4">
+  <div class="slide-caption">Психология восприятия</div>
+  <div class="block">
+    <ul>
+      <li><strong>Доверчивость людей:</strong> В соцсетях блогеры воспринимаются как «друзья», что снижает барьеры недоверия. 87,5% россиян доверяют блогерам старше 50 лет — в два раза больше, чем молодым блогерам. Парасоциальные связи создают иллюзию личного знакомства.</li>
+
+      <li><strong>«Эхо-камеры» и фильтрационные пузыри:</strong> Алгоритмы создают замкнутые информационные среды, показывая только соответствующий контент. За 3 месяца алгоритмы формируют портрет предпочтений с 80% точностью. Это ограничивает доступ к альтернативным мнениям.</li>
+
+      <li><strong>Фейковые подтверждения:</strong> Лайки, репосты и комментарии создают иллюзию массовой поддержки даже ложной информации. «Социальное доказательство» заставляет считать популярный контент достоверным. Боты искусственно создают видимость популярности.</li>
+
+ 
+    </ul>
+  </div>
+</section>
+
+<!-- 6. Примеры манипуляций - Джон Доллар -->
+<section class="slide" id="slide-5">
+  <div class="slide-caption">Примеры манипуляций</div>
+  <div class="slide-subtitle">Джон Доллар</div>
+  <div class="dollar-layout">
+    <div class="dollar-left">
+      <img src="Джон Доллар.png" alt="Джон Доллар" class="img-height" />
+    </div>
+    <div class="dollar-right">
+      <img src="Книга Джона Доллара.png" alt="Книга Джона Доллара" class="img-height" />
+      <img src="Ценник.png" alt="Ценник" class="img-height" />
+    </div>
+  </div>
+</section>
+
+<!-- 7. Примеры манипуляций - Марьяна Ро -->
+<section class="slide" id="slide-6">
+  <div class="slide-caption">Примеры манипуляций</div>
+  <div class="slide-subtitle">Марьяна Ро</div>
+  <div class="maryana-layout">
+    <img src="Марьяна Ро.png" alt="Марьяна Ро" class="img-height" />
+    <img src="Пост1.png" alt="Пост 1" class="img-height" />
+    <img src="Пост2.png" alt="Пост 2" class="img-height" />
+  </div>
+</section>
+
+<!-- 8. Примеры манипуляций - Шайни -->
+<section class="slide" id="slide-7">
+  <div class="slide-caption">Примеры манипуляций</div>
+  <div class="slide-subtitle">Шайни</div>
+  <div class="double-img-container">
+    <img src="Шайни2.png" alt="Шайни 2" class="img-height" />
+    <img src="Шайни.png" alt="Шайни" class="img-height" />
+  </div>
+</section>
+
+<!-- 9. Примеры манипуляций - Алекс Лесли -->
+<section class="slide" id="slide-8">
+  <div class="slide-caption">Примеры манипуляций</div>
+  <div class="slide-subtitle">Алекс Лесли</div>
+  <div class="double-img-container">
+    <img src="Алекс Лесли.png" alt="Алекс Лесли" class="img-height" />
+    <img src="Лесли2.png" alt="Лесли 2" class="img-height" />
+  </div>
+</section>
+
+<!-- 10. Противодействие -->
+<section class="slide" id="slide-9">
+  <div class="slide-caption">Противодействие</div>
+  <div class="block">
+    <ul>
+      <li>Критическое мышление и проверка источников.</li>
+      <li>Распознавание постановочных и фейковых материалов.</li>
+      <li>Модерация и образовательные инициативы соцсетей.</li>
+      <li>Личная ответственность за распространение информации.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Навигация -->
+<div class="nav-arrows">
+  <button class="nav-arrow" onclick="prevSlide()" title="Назад">&#8592;</button>
+  <button class="nav-arrow" onclick="nextSlide()" title="Вперёд">&#8594;</button>
+</div>
+
+<script>
+  let slide = 0;
+  const slides = document.querySelectorAll('.slide');
+  function showSlide(n) {
+    slide = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('active', i === slide));
+  }
+  function nextSlide() { showSlide(slide + 1); }
+  function prevSlide() { showSlide(slide - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+  });
+  let startX = null;
+  document.addEventListener('mousedown', e => { startX = e.clientX; });
+  document.addEventListener('mouseup', e => {
+    if (startX !== null) {
+      if (e.clientX - startX > 90) prevSlide();
+      else if (startX - e.clientX > 90) nextSlide();
+    }
+    startX = null;
+  });
+  document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if (startX !== null && e.changedTouches.length === 1) {
+      let delta = e.changedTouches[0].clientX - startX;
+      if (delta > 80) prevSlide();
+      else if (delta < -80) nextSlide();
+    }
+    startX = null;
+  });
+</script>
+
+</body>
+</html>
